@@ -34,3 +34,25 @@ Student.prototype.update = function(name, age) {
 
 s3.update("hua", 25) // hua 190 25
 ```
+ES6 的写法
+``` javscript
+class Student {
+    // 初始化的套路
+    constructor(name, height) {
+        this.name = name
+        this.height = height
+    }
+
+    // 方法没有 var
+    greeting() {
+        console.log(`hello, I'm ${this.name}`)
+    }
+
+    update(name, age) {
+        this.name = name
+        this.age = age
+    }
+}
+var s1 = new Student("ming", 180)
+var s3 = new Student("ming", 190)
+s3.update("xiaofang", 25)
