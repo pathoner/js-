@@ -35,7 +35,7 @@ Student.prototype.update = function(name, age) {
 s3.update("hua", 25) // hua 190 25
 ```
 ES6 的写法
-``` javscript
+``` javascript
 class Student {
     // 初始化的套路
     constructor(name, height) {
