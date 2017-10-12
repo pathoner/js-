@@ -197,7 +197,7 @@ var a = {
 var b = a.fn;
 b.apply(a); 
 ```
-类似这样：apply(console, arguments)(实际上 arguments 不是数组, 但是表现和数组一模一样, 你就暂时当它是一个数组)
+类似这样：apply(console, arguments)(实际上 arguments 不是数组, 但是表现和数组一模一样, 你就暂时当它是一个数组)<br/>
 <3> bind
 ``` javascript 
 var a = {
