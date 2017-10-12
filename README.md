@@ -232,6 +232,6 @@ var a = {
 }
 var b = a.fn;
 var c = b.bind(a,10);
-c(1, 2); 10, 1, 2
+c(1, 2); guo 10, 1, 2
 ```
 
