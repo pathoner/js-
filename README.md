@@ -1,9 +1,6 @@
 # js-
 高程读书笔记
-# 第四章阅读笔记
-不要问我为什么不从第一章开始，前边的几章是对JS的大致介绍，以及一些其他的内容。从第四章才开始进入主题
-* 什么是基本类型值？什么又是引用类型的值？
-在介绍这个之前，我们需要先看看JS都有一些什么类型的值。5种基本类型：Undefined、Null、Boolean、Number、String 它们都是按值访问的，当然了什么是按值访问。<br/>
+
 # 1.1 关于面对对象以及类的概念
 我们在学习编程的过程中，总是会遇到一些问题。比如什么是面对对象，以及什么是面对过程。编程着重在于解决我们的需求，类似制造汽车，制造月饼。我们造汽车、月饼之前需要一个图纸，一份月饼模子。以后在制造的时候，不用关心模子怎么制造的，我们只用关心找到哪个模子可以制作我们想要的月饼。接下来，看看使用JS怎么实现制造“月饼”。
 ``` javascript
@@ -114,12 +111,127 @@ o.b.fn();
 var o = {
     a:10,
     b:{
-        // a:12,
+        fn:function(){
+            console.log(this.a); //undefined
+        },
+    }
+}
+o.b.fn(); 这里的this指向的是b b中没有一个a对象,因而输出undefined
+``` 
+不过还有一些特殊情况，当我们使用赋值时，类似下边这样：你会发现输出的是undefined
+``` javascript
+var o = {
+    a:10,
+    b:{
+        a:12,
         fn:function(){
             console.log(this.a); //undefined
+            console.log(this); //window
         }
     }
 }
-o.b.fn();
+var j = o.b.fn;
+j();
+```
+this永远指向的是最后调用它的对象，也就是看它执行的时候是谁调用的，例子4中虽然函数fn是被对象b所引用，但是在将fn赋值给变量j的时候并没有执行所以最终指向的是window
+
+# 1.3 与this相关的apply、call、bind
+学完this之后，可能我们会比较迷糊。因为this的用法可能看起来很混乱。所以，我们需要一些新的方法，来使this的指向显示的很清楚、或者很明确。apply、call、bind它们的作用就是这样。
+<1> call
+还是看看我们的需求，我们希望在调用的时候，将a中的user显示出来。当然，使用下边的代码是没有问题的，在调用fn的时候，将a中的user显示出来。
+``` javascript
+var a = {
+    user:"guo",
+    fn:function(){
+        console.log(this.user); // guo
+    }
+}
+a.fn(); // this 指向的是a
+```
+不过，有时候我们会遇到一些其他的问题。这样就会导致，一些this的功能与我们预期的不一样。看下边的代码：
+``` javascript
+    var a = {
+    user:"guo",
+    fn:function(){
+        console.log(this.user); //
+    }
+}
+var b = a.fn; // 
+```
+在这里，我们会发现user不能显示出来。只会将整个a显示出来
+``` javascript
+var a = {
+    user:"guo",
+    fn:function(){
+        console.log(this.user); //guo
+    }
+}
+var b = a.fn;
+b.call(a); // 这里直接将b的this指向进行一个确定。明确规定它指向a
+```
+在call中，可以对其加参数.<br/>
+第一个参数是将其指定在特定环境中。<br/>
+后边的参数会一个个传递给函数。<br/>
+``` javascript
+var a = {
+    user:"guo",
+    fn:function(e,ee){
+        console.log(this.user); // guo
+        console.log(e+ee); // 3
+    }
+}
+var b = a.fn;
+b.call(a,1,2);
+```
+<2> apply
+ apply 接受两个参数<br/>
+ 第一个参数也是指定了环境<br/>
+ 第二个参数是要传给函数的参数列表, 类型是 数组, apply 会把数组拆成一个个的参数传给函数<br/>
+``` javascript
+var a = {
+    user:"guo",
+    fn:function(){
+        console.log(this.user); //guo
+    }
+}
+var b = a.fn;
+b.apply(a); 
+```
+类似这样：apply(console, arguments)(实际上 arguments 不是数组, 但是表现和数组一模一样, 你就暂时当它是一个数组)
+``` javascript 
+var a = {
+    user:"guo",
+    fn:function(){
+        console.log(this.user);
+    }
+}
+var b = a.fn;
+b.bind(a);
 ``` 
+这里你会发现它没有输出guo，当然了它还是输出一个函数。其实这个函数已经将this进行了一个小小的修改。<br/>
+看下边的代码，你就会理解。
+``` javascript
+var a = {
+    user:"guo",
+    fn:function(){
+        console.log(this.user);
+    }
+}
+var b = a.fn;
+var c = b.bind(a);
+c() // guo
+```
+同样bind也可以有多个参数，并且参数可以执行的时候再次添加，但是要注意的是，参数是按照形参的顺序进行的.
+``` javascript
+var a = {
+    user:"guo",
+    fn:function(e,d,f){
+        console.log(this.user); //guo
+        console.log(e,d,f); //10 1 2
+    }
+}
+var b = a.fn;
+var c = b.bind(a,10);
+c(1, 2); 10, 1, 2
+```
 
