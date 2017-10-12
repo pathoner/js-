@@ -137,7 +137,7 @@ this永远指向的是最后调用它的对象，也就是看它执行的时候�
 
 # 1.3 与this相关的apply、call、bind
 学完this之后，可能我们会比较迷糊。因为this的用法可能看起来很混乱。所以，我们需要一些新的方法，来使this的指向显示的很清楚、或者很明确。apply、call、bind它们的作用就是这样。
-<1> call
+<1> call<br/>
 还是看看我们的需求，我们希望在调用的时候，将a中的user显示出来。当然，使用下边的代码是没有问题的，在调用fn的时候，将a中的user显示出来。
 ``` javascript
 var a = {
@@ -183,7 +183,7 @@ var a = {
 var b = a.fn;
 b.call(a,1,2);
 ```
-<2> apply
+<2> apply<br/>
  apply 接受两个参数<br/>
  第一个参数也是指定了环境<br/>
  第二个参数是要传给函数的参数列表, 类型是 数组, apply 会把数组拆成一个个的参数传给函数<br/>
@@ -198,6 +198,7 @@ var b = a.fn;
 b.apply(a); 
 ```
 类似这样：apply(console, arguments)(实际上 arguments 不是数组, 但是表现和数组一模一样, 你就暂时当它是一个数组)
+<3> bind
 ``` javascript 
 var a = {
     user:"guo",
